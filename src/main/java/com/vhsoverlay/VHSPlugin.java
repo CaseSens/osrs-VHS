@@ -16,7 +16,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Example"
+	name = "VHS Overlay"
 )
 public class VHSPlugin extends Plugin
 {
