@@ -9,8 +9,10 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
@@ -24,16 +26,29 @@ public class VHSPlugin extends Plugin
 	@Inject
 	private VHSConfig config;
 
+	@Inject
+	private OverlayManager overlayManager;
+
+	private CRTOverlay crtOverlay;
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		log.info("Example started!");
+		updateOverlay();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		log.info("Example stopped!");
+		overlayManager.remove(crtOverlay);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("VHS")) {
+			updateOverlay();
+		}
 	}
 
 	@Subscribe
@@ -43,8 +58,18 @@ public class VHSPlugin extends Plugin
 		{
 			// Apply the VHS effect here
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "VHS effect activated", null);
-		} else {
+		}
+		else
+		{
 			// Maybe deactivate the VHS effect if you have persistent effects
+		}
+	}
+
+	private void updateOverlay() {
+		if (config.enableVHS()) {
+			overlayManager.add(crtOverlay);
+		} else {
+			overlayManager.remove(crtOverlay);
 		}
 	}
 
