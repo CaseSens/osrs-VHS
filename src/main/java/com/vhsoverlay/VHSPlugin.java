@@ -1,4 +1,4 @@
-package com.example;
+package com.vhsoverlay;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -16,13 +16,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Example"
 )
-public class ExamplePlugin extends Plugin
+public class VHSPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private ExampleConfig config;
+	private VHSConfig config;
 
 	@Override
 	protected void startUp() throws Exception
@@ -41,13 +41,16 @@ public class ExamplePlugin extends Plugin
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
+			// Apply the VHS effect here
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "VHS effect activated", null);
+		} else {
+			// Maybe deactivate the VHS effect if you have persistent effects
 		}
 	}
 
 	@Provides
-	ExampleConfig provideConfig(ConfigManager configManager)
+	VHSConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(ExampleConfig.class);
+		return configManager.getConfig(VHSConfig.class);
 	}
 }
